@@ -61,5 +61,63 @@ public class SmartCartUI {
             productsPanel.add(checkBox, gbc); // Προσθήκη στο GridBagLayout
         }
         panel.add(productsPanel);
+
+        // Ετικέτα για την τοποθεσία
+        JLabel locationLabel = new JLabel("Select your location:");
+        locationLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένος τίτλος
+        panel.add(locationLabel);
+
+        // Dropdown menu για την τοποθεσία
+
+        // TODO add the right districts
+        String[] locations = { "Κηφισιά", "Χαλάνδρι", "Αμπελόκηποι", "Γλυφάδα", "Μαρούσι", "Πατήσια", "Παγκράτι" };
+        JComboBox<String> locationDropdown = new JComboBox<>(locations);
+        panel.add(locationDropdown);
+
+        // Κουμπί υποβολής
+        JButton submitButton = new JButton("Find Best Supermarket");
+        submitButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένο κουμπί
+        panel.add(submitButton);
+
+        // Πεδίο αποτελεσμάτων
+        JTextArea resultArea = new JTextArea(5, 30);
+        resultArea.setEditable(false);
+        resultArea.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένο πεδίο
+        panel.add(resultArea);
+
+        // Λειτουργικότητα κουμπιού
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ανάκτηση επιλεγμένων προϊόντων
+                List<String> selectedProducts = new ArrayList<>();
+                for (JCheckBox checkBox : productCheckboxes) {
+                    if (checkBox.isSelected()) {
+                        selectedProducts.add(checkBox.getText());
+                    }
+                }
+
+                // Ανάκτηση επιλεγμένης τοποθεσίας
+                String selectedLocation = (String) locationDropdown.getSelectedItem();
+
+                // Έλεγχος αν επιλέχθηκαν προϊόντα
+                if (selectedProducts.isEmpty()) {
+                    resultArea.setText("Please select at least one product.");
+                    return;
+                }
+
+                // Σύνδεση με τη βάση δεδομένων και εύρεση αποτελεσμάτων
+                DatabaseHandler dbHandler = new DatabaseHandler();
+                String result = dbHandler.fetchBestSupermarket(selectedProducts);
+
+                // Εμφάνιση αποτελεσμάτων
+                resultArea.setText("Selected products: " + String.join(", ", selectedProducts) + "\n" +
+                        "Selected location: " + selectedLocation + "\n" +
+                        result);
+            }
+        });
+
+        // Εμφάνιση παραθύρου
+        frame.setVisible(true);
     }
 }
