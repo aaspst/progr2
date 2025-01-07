@@ -1,10 +1,6 @@
-CREATE DATABASE SmartCartDB;
- 
-USE SmartCartDB;
- 
 CREATE TABLE supermarkets (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
 );
  
 INSERT INTO supermarkets (name) VALUES
@@ -15,8 +11,8 @@ INSERT INTO supermarkets (name) VALUES
 ('Μασούτης');
  
 CREATE TABLE Products (
-    product_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_name VARCHAR(100) NOT NULL
+    product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_name TEXT NOT NULL
 );
  
 INSERT INTO Products (product_name) VALUES
@@ -92,7 +88,7 @@ INSERT INTO Products (product_name) VALUES
 ('Γαρίδες Φρέσκιες 1 κιλό'),
 ('Ψάρι Λευκο Κατεψυγμένο'),
 ('Σκόρδο'),
-('Φέτα Π.Ο.Π./Kg'),
+('Φέτα Π.Ο.Π. 1 κιλό'),
 ('Φρουτόκρεμα για Βρέφη'),
 ('Πάνες'),
 ('Οδοντόβουρτσα'),
@@ -122,9 +118,9 @@ INSERT INTO Products (product_name) VALUES
 ('Καλαμπόκι');
  
 CREATE TABLE Prices (
-    product_id INT NOT NULL,
-    supermarket_id INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
+    product_id INTEGER NOT NULL,
+    supermarket_id INTEGER NOT NULL,
+    price REAL NOT NULL,
     PRIMARY KEY (product_id, supermarket_id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
     FOREIGN KEY (supermarket_id) REFERENCES supermarkets(id)
