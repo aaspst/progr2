@@ -126,6 +126,7 @@ CREATE TABLE Prices (
     FOREIGN KEY (supermarket_id) REFERENCES supermarkets(id)
 );
 
+INSERT INTO Prices (product_id, supermarket_id, price) VALUES
 (1,1,1.05),
 (1,2,1.10),
 (1,3,1.15),
