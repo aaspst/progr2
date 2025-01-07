@@ -1,4 +1,4 @@
-CREATE TABLE supermarkets (
+CREATE TABLE IF NOT EXISTS supermarkets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
 );
@@ -10,7 +10,7 @@ INSERT INTO supermarkets (name) VALUES
 ('Μπαλάσκας'),
 ('Μασούτης');
  
-CREATE TABLE Products (
+CREATE TABLE IF NOT EXISTS Products (
     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
     product_name TEXT NOT NULL
 );
@@ -117,7 +117,7 @@ INSERT INTO Products (product_name) VALUES
 ('Αλεύρι'),
 ('Καλαμπόκι');
  
-CREATE TABLE Prices (
+CREATE TABLE IF NOT EXISTS Prices (
     product_id INTEGER NOT NULL,
     supermarket_id INTEGER NOT NULL,
     price REAL NOT NULL,
