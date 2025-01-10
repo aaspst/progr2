@@ -18,7 +18,18 @@ public class OptimizationEngine {
 
     // Μέθοδος για εύρεση του καλύτερου σούπερ μάρκετ με βάση τα επιλεγμένα προϊόντα
     public String fetchBestSupermarket(List<String> products) {
-        String query = """ """;
+        String query = """
+                    SELECT
+                        s.name AS supermarket_name,
+                        SUM(pr.price) AS total_price
+                    FROM Prices pr
+                    JOIN Products p ON pr.product_id = p.product_id
+                    JOIN Supermarkets s ON pr.supermarket_id = s.id
+                    WHERE p.product_name IN (%s)
+                    GROUP BY s.id
+                    ORDER BY total_price ASC
+                    LIMIT 1; 
+                """;
 
         // Δημιουργία placeholders για τα προϊόντα
         String placeholders = String.join(",", Collections.nCopies(products.size(), "?"));
