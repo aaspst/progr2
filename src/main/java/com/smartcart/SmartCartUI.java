@@ -1,16 +1,40 @@
 package com.smartcart;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
+import javax.swing.BoxLayout;
 import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SmartCartUI {
+
     public static void main(String[] args) {
+        // Δημιουργία SQL Executor
+        SQLFileExecutor sqlExecutor = new SQLFileExecutor();
+        sqlExecutor.connect();
+
+        // Εκτέλεση SQL αρχείου
+        try {
+            sqlExecutor.executeSQLFile("SmartCartDB.sql");
+        } catch (Exception e) {
+            System.out.println("Failed to execute SQL file: " + e.getMessage());
+            e.printStackTrace();
+            sqlExecutor.close();
+            return;
+        }
+
         // Δημιουργία παραθύρου
         JFrame frame = new JFrame("Supermarket Optimizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,16 +56,10 @@ public class SmartCartUI {
         productsLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένος τίτλος
         panel.add(productsLabel);
 
-        // Δημιουργία πάνελ για τα checkboxes με διάταξη τύπου "bunch με 3 στήλες"
+        // Δημιουργία πάνελ για τα checkboxes
         JPanel productsPanel = new JPanel();
-        productsPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0; // Στήλη
-        gbc.gridy = 0; // Γραμμή
-        gbc.insets = new Insets(5, 5, 5, 5); // Αποστάσεις μεταξύ στοιχείων
+        productsPanel.setLayout(new GridLayout(0, 3, 5, 5));
 
-        // Δημιουργία checkboxes για προϊόντα
         String[] productOptions = {
                 "Γάλα", "Γιαούρτι", "Γαλοπούλα", "Αυγά",
                 "Ντομάτες 1 κιλό", "Πατάτες 1 κιλό", "Κρεμμύδια 1 κιλό", "Λάχανο 1 κιλό", "Μαρούλι 1 κιλό",
@@ -76,22 +94,18 @@ public class SmartCartUI {
                 "Αλεύρι", "Καλαμπόκι"
 
         };
+
         List<JCheckBox> productCheckboxes = new ArrayList<>();
-        for (int i = 0; i < productOptions.length; i++) {
-            JCheckBox checkBox = new JCheckBox(productOptions[i]);
+        for (String product : productOptions) {
+            JCheckBox checkBox = new JCheckBox(product);
             productCheckboxes.add(checkBox);
-
-            // Υπολογισμός θέσης στοιχείου
-            gbc.gridx = i % 3; // Εναλλαγή μεταξύ 0, 1, 2 για 3 στήλες
-            gbc.gridy = i / 3; // Μετακίνηση στη νέα γραμμή μετά από κάθε 3 στοιχεία
-
-            productsPanel.add(checkBox, gbc); // Προσθήκη στο GridBagLayout
+            productsPanel.add(checkBox);
         }
         panel.add(productsPanel);
 
         // Ετικέτα για την τοποθεσία
         JLabel locationLabel = new JLabel("Select your location:");
-        locationLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένος τίτλος
+        locationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(locationLabel);
 
         // Dropdown menu για την τοποθεσία
@@ -103,13 +117,13 @@ public class SmartCartUI {
 
         // Κουμπί υποβολής
         JButton submitButton = new JButton("Find Best Supermarket");
-        submitButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένο κουμπί
+        submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(submitButton);
 
         // Πεδίο αποτελεσμάτων
         JTextArea resultArea = new JTextArea(5, 30);
         resultArea.setEditable(false);
-        resultArea.setAlignmentX(Component.CENTER_ALIGNMENT); // Κεντραρισμένο πεδίο
+        resultArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(resultArea);
 
         // Λειτουργικότητα κουμπιού
@@ -127,9 +141,9 @@ public class SmartCartUI {
                 // Ανάκτηση επιλεγμένης τοποθεσίας
                 String selectedLocation = (String) locationDropdown.getSelectedItem();
 
-                // Έλεγχος ότι επιλέχθηκαν τουλάχιστον 2 προιόντα
-                if (selectedProducts.size() < 2) {
-                    resultArea.setText("Please select at least two products.");
+                // Έλεγχος αν επιλέχθηκαν προϊόντα
+                if (selectedProducts.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please select at least two products.", "Warning", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
@@ -137,14 +151,28 @@ public class SmartCartUI {
                 OptimizationEngine optimizer = new OptimizationEngine(sqlExecutor.getConnection());
                 String result = optimizer.fetchBestSupermarket(selectedProducts);
 
-                // Εμφάνιση αποτελεσμάτων
-                resultArea.setText("Selected products: " + String.join(", ", selectedProducts) + "\n" +
-                        "Selected location: " + selectedLocation + "\n" +
-                        result);
+                // Προσθήκη τοποθεσίας στο αποτέλεσμα
+                if (result.contains("The best supermarket is")) {
+                    result += " in " + selectedLocation + ".";
+                }
+
+                // Άνοιγμα νέας σελίδας για την εμφάνιση αποτελεσμάτων
+                new ResultPage("Selected products: " + String.join(", ", selectedProducts) + "\n" +
+                               "Selected location: " + selectedLocation + "\n" +
+                               result);
             }
         });
 
+
         // Εμφάνιση παραθύρου
         frame.setVisible(true);
+
+        // Κλείσιμο πόρων κατά την έξοδο
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                sqlExecutor.close();
+            }
+        });
     }
 }

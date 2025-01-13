@@ -2,19 +2,19 @@ CREATE TABLE IF NOT EXISTS supermarkets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
 );
- 
+
 INSERT INTO supermarkets (name) VALUES
 ('Σκλαβενίτης'),
 ('Βασιλόπουλος'),
 ('Κρητικός'),
 ('Μπαλάσκας'),
 ('Μασούτης');
- 
+
 CREATE TABLE IF NOT EXISTS Products (
     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
     product_name TEXT NOT NULL
 );
- 
+
 INSERT INTO Products (product_name) VALUES
 ('Γάλα'),
 ('Γιαούρτι'),
@@ -59,7 +59,7 @@ INSERT INTO Products (product_name) VALUES
 ('Φασολάκια Φρέσκα 1 κιλό'),
 ('Κοτόπουλο Στήθος'),
 ('Κοτόπουλο Μπούτι'),
-('Βούτηρο'),
+('Βούτυρο'),
 ('Μαρμελάδα'),
 ('Μέλι'),
 ('Φρυγανιές'),
@@ -116,7 +116,7 @@ INSERT INTO Products (product_name) VALUES
 ('Καραμέλες'),
 ('Αλεύρι'),
 ('Καλαμπόκι');
- 
+
 CREATE TABLE IF NOT EXISTS Prices (
     product_id INTEGER NOT NULL,
     supermarket_id INTEGER NOT NULL,
