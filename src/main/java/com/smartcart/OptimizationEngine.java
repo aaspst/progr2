@@ -18,6 +18,13 @@ public class OptimizationEngine {
 
     // Μέθοδος για εύρεση του καλύτερου σούπερ μάρκετ με βάση τα επιλεγμένα προϊόντα
     public String fetchBestSupermarket(List<String> products) {
+        if (products == null) {
+            return "No products provided.";
+        }
+        if (products.isEmpty()) {
+            return "No data available for the selected products.";
+        }
+
         String query = """
                     SELECT
                         s.name AS supermarket_name,
@@ -28,7 +35,7 @@ public class OptimizationEngine {
                     WHERE p.product_name IN (%s)
                     GROUP BY s.id
                     ORDER BY total_price ASC
-                    LIMIT 1; 
+                    LIMIT 1;
                 """;
 
         // Δημιουργία placeholders για τα προϊόντα
@@ -48,7 +55,8 @@ public class OptimizationEngine {
             if (resultSet.next()) {
                 String supermarketName = resultSet.getString("supermarket_name");
                 double totalPrice = resultSet.getDouble("total_price");
-                return "The best supermarket is: " + supermarketName + " with total price: " + totalPrice + "€.";
+                return String.format("The best supermarket is: %s with total price: %.2f€", supermarketName,
+                    totalPrice);
             } else {
                 return "No data available for the selected products.";
             }

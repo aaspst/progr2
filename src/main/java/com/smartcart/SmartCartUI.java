@@ -142,7 +142,7 @@ public class SmartCartUI {
                 String selectedLocation = (String) locationDropdown.getSelectedItem();
 
                 // Έλεγχος αν επιλέχθηκαν προϊόντα
-                if (selectedProducts.isEmpty()) {
+                if (selectedProducts.size() < 2) {
                     JOptionPane.showMessageDialog(frame, "Please select at least two products.", "Warning", JOptionPane.WARNING_MESSAGE);
                     return;
                 }

@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS Prices;
 DROP TABLE IF EXISTS Products;
-DROP TABLE IF EXISTS supermarkets;
+DROP TABLE IF EXISTS Supermarkets;
 
-CREATE TABLE IF NOT EXISTS supermarkets (
+CREATE TABLE IF NOT EXISTS Supermarkets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
 );
 
-INSERT INTO supermarkets (name) VALUES
+INSERT OR IGNORE INTO Supermarkets (name) VALUES
 ('Σκλαβενίτης'),
 ('Βασιλόπουλος'),
 ('Κρητικός'),
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Products (
     product_name TEXT NOT NULL
 );
 
-INSERT INTO Products (product_name) VALUES
+INSERT OR IGNORE INTO Products (product_name) VALUES
 ('Γάλα'),
 ('Γιαούρτι'),
 ('Γαλοπούλα'),
@@ -127,10 +127,10 @@ CREATE TABLE IF NOT EXISTS Prices (
     price REAL NOT NULL,
     PRIMARY KEY (product_id, supermarket_id),
     FOREIGN KEY (product_id) REFERENCES Products(product_id),
-    FOREIGN KEY (supermarket_id) REFERENCES supermarkets(id)
+    FOREIGN KEY (supermarket_id) REFERENCES Supermarkets(id)
 );
 
-INSERT INTO Prices (product_id, supermarket_id, price) VALUES
+INSERT OR IGNORE INTO Prices (product_id, supermarket_id, price) VALUES
 (1,1,1.05),
 (1,2,1.10),
 (1,3,1.15),
