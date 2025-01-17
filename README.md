@@ -12,17 +12,17 @@ To compile the project:
 2. Run the following command in the root directory of the project:
    ```bash
    mvn clean package
-**There might occur a test failure in the first compilation,
-because the database can't get recognised as it's being built while compiling.
-It gets fixed if you try to compile the program again**
+
+***There might occur a test failure in the first compilation,
+because the database can't get recognised as it's being built while compiling. It gets fixed if you try to compile the program again.***
 
 ---
 
 ## **Execution Instructions**
 1. Ensure that you have compiled the program.
-2. Run the following command in the root directory of the project:
+2. Run the following command in the root directory of the project, where `pom.xml` is located:
    ```bash
-    mvn exec:java
+   mvn exec:java
 
 ---
 
@@ -63,44 +63,23 @@ It gets fixed if you try to compile the program again**
 ├── readme.md
 ├── ClearDatabase.sql
 
+```
+
+---
+
+## **UML Diagram**
+![uml image](https://github.com/aaspst/progr2/raw/main/UML_diagram.png)
+---
+
+## **Data Structures and Alorithms Overview**
+
+### **Data Structures**
+- SQLite database for storing product, supermarket, and pricing data.
+- Java `Lists` for handling user inputs (product lists).
+
+###  **Algorithms**
+- SQL query for calculating the total price for selected products at each supermarket.
+- Dynamic SQL placeholders for secure and efficient input handling.
+- Robust error handling for missing data (selection of less than 2 products).
 
 
-
-```plantuml
-@startuml
-class SQLFileExecutor {
-    - String DB_URL
-    - Connection connection
-    + connect(): void
-    + close(): void
-    + executeSQLFile(String filePath)
-    + getConnection(): Connection
-}
-
-class OptimizationEngine {
-    - Connection connection
-    + OptimizationEngine(Connection connection)
-    + fetchBestSupermarket(List<String> products): String
-}
-
-class SmartCartUI {
-    + main(String[] args)
-}
-
-class ResultPage {
-    - JFrame resultFrame
-    - JPanel logoPanel
-    - JScrollPane scrollPane
-    - JPanel buttonPanel
-    + ResultPage(String result)
-    + getLogoPanel(): JPanel
-    + getScrollPane(): JScrollPane
-    + getButtonPanel(): JPanel
-    - loadCustomFont(String path, float size): Font
-}
-
-OptimizationEngine --> SQLFileExecutor : uses connection
-SmartCartUI --> SQLFileExecutor : creates and initializes
-SmartCartUI --> OptimizationEngine : uses
-SmartCartUI --> ResultPage : creates
-@enduml
