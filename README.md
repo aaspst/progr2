@@ -60,8 +60,9 @@ because the database can't get recognised as it's being built while compiling. I
 │       │       ├── OptimizationEngineTest.java
 │       │       └── ResultPageTest.java
 ├── pom.xml
-├── readme.md
-├── ClearDatabase.sql
+├── README.md
+├── SmartCart.sql
+├── UML_diagram.png
 
 ```
 
