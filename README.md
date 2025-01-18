@@ -63,6 +63,7 @@ because the database can't get recognised as it's being built while compiling. I
 ├── README.md
 ├── SmartCart.sql
 ├── UML_diagram.png
+├── LICENSE.txt
 
 ```
 
@@ -70,6 +71,7 @@ because the database can't get recognised as it's being built while compiling. I
 
 ## **UML Diagram**
 ![uml image](https://github.com/aaspst/progr2/raw/main/UML_diagram.png)
+
 ---
 
 ## **Data Structures and Alorithms Overview**
@@ -83,4 +85,24 @@ because the database can't get recognised as it's being built while compiling. I
 - Dynamic SQL placeholders for secure and efficient input handling.
 - Robust error handling for missing data (selection of less than 2 products).
 
+---
 
+## Authors
+[Georgios Symeon Dionysopoulos](mailto:8230033@aueb.gr),
+[Karakatsanis Emmanouil](mailto:8230047@aueb.gr),
+[Katsoulis Dimitrios](mailto:8230056@aueb.gr),
+[Mpelogiannis Vasileios](mailto:8230103@aueb.gr),
+[Mpinatsis Marios](mailto:823014@aueb.gr),
+[Sotiropoulos Evangelos](mailto:8230148@aueb.gr),
+[Tsagkaropoulou Aspasia](mailto:asptsagkarop@gmail.com)
+
+---
+
+## Contributing
+
+Pull requests are welcome. Please make sure to update tests as appropriate.
+
+---
+
+## License
+This project is licensed under the MIT License - click [here](LICENSE.txt) for details.
